@@ -1,37 +1,47 @@
 [
   {
-    "id": "1",
-    "name": "Tiểu thuyết 6 đợt thức tỉnh",
-    "description": "Sách mình mua hồi tháng 9, đọc ít nên còn khá mới, cần pass lại cho bạn nào có nhu cầu",
-    "condition": 9,
-    "images": []
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Comic"
   },
   {
-    "id": "2",
-    "name": "Tiểu thuyết 6 đợt thức tỉnh",
-    "description": "Sách mình mua hồi tháng 9, đọc ít nên còn khá mới, cần pass lại cho bạn nào có nhu cầu",
-    "condition": 9,
-    "images": []
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Comic"
   },
   {
-    "id": "3",
-    "name": "Tiểu thuyết 6 đợt thức tỉnh",
-    "description": "Sách mình mua hồi tháng 9, đọc ít nên còn khá mới, cần pass lại cho bạn nào có nhu cầu",
-    "condition": 9,
-    "images": []
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Poem"
   },
   {
-    "id": "4",
-    "name": "Tiểu thuyết 6 đợt thức tỉnh",
-    "description": "Sách mình mua hồi tháng 9, đọc ít nên còn khá mới, cần pass lại cho bạn nào có nhu cầu",
-    "condition": 9,
-    "images": []
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Hardcover"
   },
   {
-    "id": "5",
-    "name": "Tiểu thuyết 6 đợt thức tỉnh",
-    "description": "Sách mình mua hồi tháng 9, đọc ít nên còn khá mới, cần pass lại cho bạn nào có nhu cầu",
-    "condition": 9,
-    "images": []
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Novel"
+  },
+  {
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Novel"
+  },
+  {
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Poem"
+  },
+  {
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Textbook"
+  },
+  {
+    "title": "The apple in my eyes is Emily",
+    "content": "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
+    "type": "Textbook"
   }
 ]
