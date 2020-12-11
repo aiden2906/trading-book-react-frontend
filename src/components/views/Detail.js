@@ -1,5 +1,6 @@
 import React from 'react';
 import MediaControlCard from '../elements/MediaControlCard';
+import { useParams } from 'react-router-dom';
 
 const style = {
   image: {
@@ -44,6 +45,8 @@ const style = {
 };
 
 const Detail = (props) => {
+  const { id } = useParams();
+  console.log('--- Redirect to: ', id);
   return (
     <div>
       <div>

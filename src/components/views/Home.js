@@ -4,11 +4,12 @@ import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Card from '../elements/Card';
 import products from '../../mocks/products.json';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   active: {
     backgroundColor: '#83BB61',
-    color: 'white !important'
+    color: 'white !important',
   },
 }));
 
@@ -70,6 +71,8 @@ const Home = () => {
     setState(cat);
   };
 
+  const viewDetail = (product) => {};
+
   return (
     <div>
       <div style={style.panner}>
@@ -114,15 +117,19 @@ const Home = () => {
           </Grid>
         </div>
 
-        <div style={{marginTop: '90px'}}>
+        <div style={{ marginTop: '90px' }}>
           <Grid container spacing={3}>
-            {products.filter(p => state === 'General' || p.type === state).map((p) => {
-              return (
-                <Grid item xs={3}>
-                  <Card {...p}></Card>
-                </Grid>
-              );
-            })}
+            {products
+              .filter((p) => state === 'General' || p.type === state)
+              .map((p) => {
+                return (
+                  <Grid item xs={3}>
+                    <Link to={`/product/${p.id}`} style={{ textDecoration: 'none' }}>
+                      <Card {...p} onClick={() => viewDetail(p)}></Card>
+                    </Link>
+                  </Grid>
+                );
+              })}
           </Grid>
         </div>
       </div>
