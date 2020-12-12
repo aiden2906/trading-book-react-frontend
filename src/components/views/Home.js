@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Card from '../elements/Card';
 import products from '../../mocks/products.json';
 import { Link } from 'react-router-dom';
+const axios = require('axios').default;
+
 
 const useStyles = makeStyles((theme) => ({
   active: {
@@ -64,8 +66,17 @@ const style = {
 
 const Home = () => {
   const [state, setState] = useState('General');
+  const [product, setProduct] = useState([]);
   const classes = useStyles();
   const categories = ['General', 'Comic', 'Poem', 'Hardcover', 'Novel', 'Textbook'];
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/demo/api/books').then(res => {
+      console.log(res)
+      // setProduct(res.data);
+
+    });
+  });
 
   const changeCategories = (cat) => {
     setState(cat);
@@ -119,7 +130,7 @@ const Home = () => {
 
         <div style={{ marginTop: '90px' }}>
           <Grid container spacing={3}>
-            {products
+            {product
               .filter((p) => state === 'General' || p.type === state)
               .map((p) => {
                 return (

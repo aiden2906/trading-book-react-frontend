@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MediaControlCard from '../elements/MediaControlCard';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+const axios = require('axios').default;
 
 const style = {
   image: {
@@ -82,7 +83,42 @@ const style = {
   },
 };
 
+const BASE_URL = 'http://localhost:8080';
+
 const Profile = () => {
+  const nameRef = useRef('');
+  const contentRef = useRef('');
+  const addressRef = useRef('');
+  const phoneRef = useRef('');
+  const [form, setForm] = useState({
+    name: '',
+    content: '',
+    type: 'none',
+    address: '',
+    phone: '',
+  });
+
+  console.log('----Form: ', form);
+
+  const createProduct = () => {
+    const dto = Object.assign(form, {
+      name: nameRef.current.value,
+      content: contentRef.current.value,
+      address: addressRef.current.value,
+      phone: phoneRef.current.value,
+    });
+    // axios.post(`${BASE_URL}/api/books`, {
+    //   form,
+    // });
+  };
+
+
+
+  const handleSelectOption = (event) => {
+    setForm({ ...form, type: event.target.value });
+  };
+
+  const categories = ['General', 'Comic', 'Poem', 'Hardcover', 'Novel', 'Textbook'];
   return (
     <div>
       <div style={{ position: 'relative' }}>
@@ -139,6 +175,7 @@ const Profile = () => {
               width: '100%',
               marginBottom: '30px',
             }}
+            ref={nameRef}
             placeHolder="Enter name"
           ></input>
           <div>Description</div>
@@ -150,19 +187,56 @@ const Profile = () => {
               width: '100%',
               marginBottom: '30px',
             }}
+            ref={contentRef}
           ></textarea>
           <div>Categories</div>
-          <Select
-          // open={open}
-          // onClose={handleClose}
-          // onOpen={handleOpen}
-          // value={age}
-          // onChange={handleChange}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+          <Select value={form.type} onChange={handleSelectOption} style={{ marginBottom: 30 }}>
+            <MenuItem value="none">
+              <em>None</em>
+            </MenuItem>
+            {categories.map((cat) => {
+              return <MenuItem value={cat}>{cat}</MenuItem>;
+            })}
           </Select>
+          <div>Address</div>
+          <input
+            style={{
+              padding: 15,
+              border: '2px solid black',
+              borderRadius: '10px',
+              width: '100%',
+              marginBottom: '30px',
+            }}
+            ref={addressRef}
+            placeHolder="Enter address"
+          ></input>
+          <div>Phone</div>
+          <input
+            style={{
+              padding: 15,
+              border: '2px solid black',
+              borderRadius: '10px',
+              width: '100%',
+              marginBottom: '30px',
+            }}
+            ref={phoneRef}
+            placeHolder="Enter phone"
+          ></input>
+
+          <Button
+            style={{
+              backgroundColor: '#83BB61',
+              width: 286,
+              height: 80,
+              marginTop: '90px',
+              borderRadius: '50px',
+              fontSize: '24px',
+              color: 'white',
+            }}
+            onClick={createProduct}
+          >
+              Create
+          </Button>
         </div>
       </div>
     </div>
