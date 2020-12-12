@@ -92,7 +92,7 @@ const Home = () => {
               color: 'white',
             }}
           >
-            Visit your page
+            <Link to="/profile" style={{ textDecoration: 'none', color: 'white'}}>Visit your page</Link>
           </Button>
         </div>
       </div>

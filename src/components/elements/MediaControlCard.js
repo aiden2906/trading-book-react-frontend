@@ -49,41 +49,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaControlCard() {
+export default function MediaControlCard(props) {
+  const {src} = props;
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardMedia
         className={classes.cover}
-        image="/static/images/Rectangle-30.png"
+        image={src}
         title="Live from space album cover"
       />
       <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5" className={classes.contentName}>
-            Socilla
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" className={classes.contentInfo}>
-            0123456789
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" className={classes.contentInfo}>
-            abc@gmail.com
-          </Typography>
-          <Button
-            style={{
-              backgroundColor: '#83BB61',
-              width: '300px',
-              height: '100px',
-              marginTop: '116px',
-              borderRadius: '50px',
-              fontSize: '30px',
-              color: 'white'
-            }}
-          >
-            Chat
-          </Button>
-        </CardContent>
+        {props.children}
       </div>
     </Card>
   );
