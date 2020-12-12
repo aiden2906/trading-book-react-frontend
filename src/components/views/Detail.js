@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import MediaControlCard from '../elements/MediaControlCard';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, CardMedia, CardContent, Card } from '@material-ui/core';
+import { Button, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
+const axios = require('axios').default;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +61,7 @@ const style = {
   detailImage: {
     width: '535px',
     height: '796px',
+    objectFit: 'cover'
   },
   container: {
     width: '80%',
@@ -95,7 +98,17 @@ const style = {
 
 const Detail = (props) => {
   const { id } = useParams();
+  const [state, setState] = useState({});
+  const {name, content, username, address, phone, image} = state;
   const classes = useStyles();
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/demo/api/books/${id}`).then(res => {
+      setState(res.data);
+    });
+  }, []);
+
+
   console.log('--- Redirect to: ', id);
   return (
     <div>
@@ -105,38 +118,31 @@ const Detail = (props) => {
       <div style={style.container}>
         <div style={{ position: 'relative' }}>
           <div style={{ position: 'absolute', top: '-400px' }}>
-            <img style={style.detailImage} src="/static/images/DetailImage.png" alt="error" />
+            <img style={style.detailImage} src={image} alt="error" />
           </div>
           <div style={{ position: 'absolute', top: '40px', right: '0px', width: '62%' }}>
             <div style={style.createdAt}>2 days ago</div>
-            <div style={style.bigTitle}>The apple in my eyes is Emily</div>
+            <div style={style.bigTitle}>{name}</div>
           </div>
         </div>
         <div style={{ height: '300px' }}></div>
         <div style={style.title}>Description</div>
         <div style={style.content}>
-          There are many variations of passages of Lorem Ipsum available, but the majority have
-          suffered alteration in some form, by injected humour, or randomised words which don't look
-          even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be
-          sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum
-          generators on the Internet tend to repeat predefined chunks as necessary, making this the
-          first true generator on the Internet. It uses a dictionary of over 200 Latin words,
-          combined with a handful of model sentence structures, to generate Lorem Ipsum which looks
-          reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected
-          humour, or non-characteristic words etc.
+          {content}
         </div>
         <div style={style.title}>Owner</div>
         <div style={style.owner}>
           <MediaControlCard src="/static/images/Rectangle-30.png">
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5" className={classes.contentName}>
-                Socilla
+                {username}
+                {/* username, address, phone */}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary" className={classes.contentInfo}>
-                0123456789
+                {phone}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary" className={classes.contentInfo}>
-                abc@gmail.com
+                {address}
               </Typography>
               <Button
                 style={{

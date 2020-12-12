@@ -5,3 +5,7 @@
   font-size: 100%;
   font-family: 'Vollkorn', serif;
  }
+
+ .MuiAvatar-img {
+   width: 50px !important;
+ }

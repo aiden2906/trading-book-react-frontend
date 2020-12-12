@@ -44,27 +44,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ACard(props) {
-  const { title, content } = props;
+  const { name, content, image } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-
-  // const handleExpandClick = () => {
-  //   setExpanded(!expanded);
-  // };
 
   return (
     <Card className={classes.root}>
       <div style={{ position: 'relative' }}>
-        <CardMedia className={classes.media} image="/static/images/book.png" title="Paella dish" />
+        <CardMedia className={classes.media} image={image} title="Paella dish" />
         <div style={{ position: 'absolute', top: 20, left: 20 }}>
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+          <Avatar aria-label="recipe" src="/static/images/avataricon.png">
           </Avatar>
         </div>
       </div>
       <CardContent>
         <Typography color="textPrimary" className={classes.title}>
-          {title}
+          {name}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p" className={classes.content}>
           {content}

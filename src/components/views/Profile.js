@@ -1,9 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MediaControlCard from '../elements/MediaControlCard';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 const axios = require('axios').default;
 
 const style = {
@@ -83,22 +86,47 @@ const style = {
   },
 };
 
-const BASE_URL = 'http://localhost:8080';
-
 const Profile = () => {
+  const username = localStorage.getItem('username');
+  const [product, setProduct] = useState([]);
   const nameRef = useRef('');
   const contentRef = useRef('');
   const addressRef = useRef('');
   const phoneRef = useRef('');
+  const imageRef = useRef('');
+  const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
     name: '',
     content: '',
     type: 'none',
     address: '',
     phone: '',
+    image: '',
   });
 
-  console.log('----Form: ', form);
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:8080/demo/api/books/${id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:8080/demo/api/books')
+      .then((res) => {
+        const myProduct = res.data.filter((p) => p.username === username);
+        console.log('----MyProduct', myProduct);
+        setProduct(myProduct);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [submit]);
 
   const createProduct = () => {
     const dto = Object.assign(form, {
@@ -106,13 +134,18 @@ const Profile = () => {
       content: contentRef.current.value,
       address: addressRef.current.value,
       phone: phoneRef.current.value,
+      image: imageRef.current.value,
+      username,
     });
-    // axios.post(`${BASE_URL}/api/books`, {
-    //   form,
-    // });
+    axios
+      .post(`http://localhost:8080/demo/api/books`, dto)
+      .then((res) => {
+        setSubmit(!submit);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-
 
   const handleSelectOption = (event) => {
     setForm({ ...form, type: event.target.value });
@@ -142,24 +175,32 @@ const Profile = () => {
       <div style={style.container}>
         <div style={{ marginTop: '150px', fontSize: '48px', fontWeight: '500' }}>Your Book</div>
         <Grid container spacing={3}>
-          {Array(5)
-            .fill(0)
-            .map((p) => {
-              return (
-                <Grid item xs={12}>
-                  <MediaControlCard src="/static/images/book1.png">
-                    <div style={style.cardDescription}>
-                      <div style={style.cardTitle}>The apple in my eyes is Emily</div>
-                      <div style={style.cardContent}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.{' '}
+          {product.length === 0
+            ? 'No book'
+            : product.map((p) => {
+                const { id, name, content, image } = p;
+                return (
+                  <Grid item xs={12}>
+                    <MediaControlCard src={image}>
+                      <div style={style.cardDescription}>
+                        <div style={style.cardTitle}>{name}</div>
+                        <div style={style.cardContent}>{content} </div>
+                        <Button style={style.cardDescriptionButton}>
+                          <Link
+                            to={`/product/${id}`}
+                            style={{ textDecoration: 'none', color: 'white' }}
+                          >
+                            Edit
+                          </Link>
+                        </Button>
+                        <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
+                          <DeleteIcon fontSize="large" />
+                        </IconButton>
                       </div>
-                      <Button style={style.cardDescriptionButton}>Edit</Button>
-                    </div>
-                  </MediaControlCard>
-                </Grid>
-              );
-            })}
+                    </MediaControlCard>
+                  </Grid>
+                );
+              })}
         </Grid>
 
         <div style={{ marginTop: '150px', fontSize: '48px', fontWeight: '500' }}>
@@ -198,6 +239,18 @@ const Profile = () => {
               return <MenuItem value={cat}>{cat}</MenuItem>;
             })}
           </Select>
+          <div>Image</div>
+          <input
+            style={{
+              padding: 15,
+              border: '2px solid black',
+              borderRadius: '10px',
+              width: '100%',
+              marginBottom: '30px',
+            }}
+            ref={imageRef}
+            placeHolder="Enter image"
+          ></input>
           <div>Address</div>
           <input
             style={{
@@ -235,7 +288,7 @@ const Profile = () => {
             }}
             onClick={createProduct}
           >
-              Create
+            Create
           </Button>
         </div>
       </div>

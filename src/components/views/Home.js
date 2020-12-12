@@ -6,6 +6,12 @@ import Card from '../elements/Card';
 import products from '../../mocks/products.json';
 import { Link } from 'react-router-dom';
 const axios = require('axios').default;
+const BASE_URL = 'http://localhost:8080';
+const client = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  withCredentials: false,
+});
 
 
 const useStyles = makeStyles((theme) => ({
@@ -69,20 +75,18 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const classes = useStyles();
   const categories = ['General', 'Comic', 'Poem', 'Hardcover', 'Novel', 'Textbook'];
-
+  console.log('----Render: ', product);
   useEffect(() => {
-    axios.get('http://localhost:8080/demo/api/books').then(res => {
-      console.log(res)
-      // setProduct(res.data);
-
-    });
-  });
+    client.get('http://localhost:8080/demo/api/books').then(res => {
+      setProduct(res.data);
+    }).catch(err => {
+      console.log('---- Err: ', err);
+    })
+  }, []);
 
   const changeCategories = (cat) => {
     setState(cat);
   };
-
-  const viewDetail = (product) => {};
 
   return (
     <div>
@@ -136,7 +140,7 @@ const Home = () => {
                 return (
                   <Grid item xs={3}>
                     <Link to={`/product/${p.id}`} style={{ textDecoration: 'none' }}>
-                      <Card {...p} onClick={() => viewDetail(p)}></Card>
+                      <Card {...p}></Card>
                     </Link>
                   </Grid>
                 );
