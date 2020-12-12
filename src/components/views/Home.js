@@ -72,6 +72,7 @@ const style = {
 
 const Home = () => {
   const [state, setState] = useState('General');
+  const username = localStorage.getItem('username');
   const [product, setProduct] = useState([]);
   const classes = useStyles();
   const categories = ['General', 'Comic', 'Poem', 'Hardcover', 'Novel', 'Textbook'];
@@ -107,7 +108,7 @@ const Home = () => {
               color: 'white',
             }}
           >
-            <Link to="/profile" style={{ textDecoration: 'none', color: 'white'}}>Visit your page</Link>
+            <Link to={`/profile/${username}`} style={{ textDecoration: 'none', color: 'white'}}>Visit your space</Link>
           </Button>
         </div>
       </div>

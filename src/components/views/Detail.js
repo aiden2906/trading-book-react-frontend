@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import MediaControlCard from '../elements/MediaControlCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const axios = require('axios').default;
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    WebkitBoxShadow:"10px 10px 20px 0px rgba(0,0,0,0.3)",
-    MozBoxShadow:"10px 10px 20px 0px rgba(0,0,0,0.3)",
-    boxShadow:"10px 10px 20px 0px rgba(0,0,0,0.3)"
+    WebkitBoxShadow: '10px 10px 20px 0px rgba(0,0,0,0.3)',
+    MozBoxShadow: '10px 10px 20px 0px rgba(0,0,0,0.3)',
+    boxShadow: '10px 10px 20px 0px rgba(0,0,0,0.3)',
   },
   details: {
     display: 'flex',
@@ -61,7 +61,7 @@ const style = {
   detailImage: {
     width: '535px',
     height: '796px',
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
   container: {
     width: '80%',
@@ -99,15 +99,14 @@ const style = {
 const Detail = (props) => {
   const { id } = useParams();
   const [state, setState] = useState({});
-  const {name, content, username, address, phone, image} = state;
+  const { name, content, username, address, phone, image } = state;
   const classes = useStyles();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/demo/api/books/${id}`).then(res => {
+    axios.get(`http://localhost:8080/demo/api/books/${id}`).then((res) => {
       setState(res.data);
     });
   }, []);
-
 
   console.log('--- Redirect to: ', id);
   return (
@@ -127,9 +126,7 @@ const Detail = (props) => {
         </div>
         <div style={{ height: '300px' }}></div>
         <div style={style.title}>Description</div>
-        <div style={style.content}>
-          {content}
-        </div>
+        <div style={style.content}>{content}</div>
         <div style={style.title}>Owner</div>
         <div style={style.owner}>
           <MediaControlCard src="/static/images/Rectangle-30.png">
@@ -155,7 +152,12 @@ const Detail = (props) => {
                   color: 'white',
                 }}
               >
-                Chat
+                <Link
+                  to={`/profile/${username}`}
+                  style={{ textDecoration: 'none', color: 'white' }}
+                >
+                  View profile
+                </Link>
               </Button>
             </CardContent>
           </MediaControlCard>

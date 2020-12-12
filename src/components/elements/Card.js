@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ACard(props) {
-  const { name, content, image } = props;
+  const { name, content, image, username } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -53,8 +53,14 @@ export default function ACard(props) {
       <div style={{ position: 'relative' }}>
         <CardMedia className={classes.media} image={image} title="Paella dish" />
         <div style={{ position: 'absolute', top: 20, left: 20 }}>
-          <Avatar aria-label="recipe" src="/static/images/avataricon.png">
-          </Avatar>
+          <Avatar
+            aria-label="recipe"
+            src={
+              username === 'pahquang'
+                ? '/static/images/avataricon.png'
+                : 'https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+            }
+          ></Avatar>
         </div>
       </div>
       <CardContent>

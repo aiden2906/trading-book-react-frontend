@@ -7,6 +7,9 @@ import Select from '@material-ui/core/Select';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useParams } from 'react-router-dom';
+import Pagination from '@material-ui/lab/Pagination';
+
 const axios = require('axios').default;
 
 const style = {
@@ -88,6 +91,8 @@ const style = {
 
 const Profile = () => {
   const username = localStorage.getItem('username');
+  const [page, setPage] = useState(1);
+  const params = useParams();
   const [product, setProduct] = useState([]);
   const nameRef = useRef('');
   const contentRef = useRef('');
@@ -113,13 +118,15 @@ const Profile = () => {
       .catch((err) => {
         console.log(err);
       });
+    const index = product.findIndex(p => p.id === id);
+    setProduct([...product.slice(0, index).concat(product.slice(index + 1))])
   };
 
   useEffect(() => {
     axios
       .get('http://localhost:8080/demo/api/books')
       .then((res) => {
-        const myProduct = res.data.filter((p) => p.username === username);
+        const myProduct = res.data.filter((p) => p.username === params.aName);
         console.log('----MyProduct', myProduct);
         setProduct(myProduct);
       })
@@ -145,6 +152,10 @@ const Profile = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleChangePage = (e, page) => {
+    setPage(page);
   };
 
   const handleSelectOption = (event) => {
@@ -177,120 +188,140 @@ const Profile = () => {
         <Grid container spacing={3}>
           {product.length === 0
             ? 'No book'
-            : product.map((p) => {
+            : product.slice((page - 1 ) * 10, (page - 1) * 10 + 10).map((p) => {
                 const { id, name, content, image } = p;
                 return (
                   <Grid item xs={12}>
                     <MediaControlCard src={image}>
                       <div style={style.cardDescription}>
-                        <div style={style.cardTitle}>{name}</div>
+                        <Link
+                          to={`/product/${id}`}
+                          style={{ textDecoration: 'none', color: 'white' }}
+                        >
+                          <div style={style.cardTitle}>{name}</div>
+                        </Link>
+
                         <div style={style.cardContent}>{content} </div>
-                        <Button style={style.cardDescriptionButton}>
-                          <Link
-                            to={`/product/${id}`}
-                            style={{ textDecoration: 'none', color: 'white' }}
-                          >
-                            Edit
-                          </Link>
-                        </Button>
-                        <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
-                          <DeleteIcon fontSize="large" />
-                        </IconButton>
+                        {username === params.aName ? (
+                          <Button style={style.cardDescriptionButton}>
+                            <Link
+                              to={`/product/${id}`}
+                              style={{ textDecoration: 'none', color: 'white' }}
+                            >
+                              Edit
+                            </Link>
+                          </Button>
+                        ) : null}
+                        {username === params.aName ? (
+                          <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
+                            <DeleteIcon fontSize="large" />
+                          </IconButton>
+                        ) : null}
                       </div>
                     </MediaControlCard>
                   </Grid>
                 );
               })}
         </Grid>
+        <Pagination
+          count={~~(product.length / 10)}
+          onChange={handleChangePage}
+          style={{ margin: '30px 650px' }}
+          size="large"
+        />
 
-        <div style={{ marginTop: '150px', fontSize: '48px', fontWeight: '500' }}>
-          Create new book
-        </div>
-        <div style={style.form}>
-          <div>Name of book</div>
-          <input
-            style={{
-              padding: 15,
-              border: '2px solid black',
-              borderRadius: '10px',
-              width: '100%',
-              marginBottom: '30px',
-            }}
-            ref={nameRef}
-            placeHolder="Enter name"
-          ></input>
-          <div>Description</div>
-          <textarea
-            style={{
-              padding: 15,
-              border: '2px solid black',
-              borderRadius: '10px',
-              width: '100%',
-              marginBottom: '30px',
-            }}
-            ref={contentRef}
-          ></textarea>
-          <div>Categories</div>
-          <Select value={form.type} onChange={handleSelectOption} style={{ marginBottom: 30 }}>
-            <MenuItem value="none">
-              <em>None</em>
-            </MenuItem>
-            {categories.map((cat) => {
-              return <MenuItem value={cat}>{cat}</MenuItem>;
-            })}
-          </Select>
-          <div>Image</div>
-          <input
-            style={{
-              padding: 15,
-              border: '2px solid black',
-              borderRadius: '10px',
-              width: '100%',
-              marginBottom: '30px',
-            }}
-            ref={imageRef}
-            placeHolder="Enter image"
-          ></input>
-          <div>Address</div>
-          <input
-            style={{
-              padding: 15,
-              border: '2px solid black',
-              borderRadius: '10px',
-              width: '100%',
-              marginBottom: '30px',
-            }}
-            ref={addressRef}
-            placeHolder="Enter address"
-          ></input>
-          <div>Phone</div>
-          <input
-            style={{
-              padding: 15,
-              border: '2px solid black',
-              borderRadius: '10px',
-              width: '100%',
-              marginBottom: '30px',
-            }}
-            ref={phoneRef}
-            placeHolder="Enter phone"
-          ></input>
+        {username === params.aName ? (
+          <div>
+            <div style={{ marginTop: '150px', fontSize: '48px', fontWeight: '500' }}>
+              Create new book
+            </div>
+            <div style={style.form}>
+              <div>Name of book</div>
+              <input
+                style={{
+                  padding: 15,
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  width: '100%',
+                  marginBottom: '30px',
+                }}
+                ref={nameRef}
+                placeHolder="Enter name"
+              ></input>
+              <div>Description</div>
+              <textarea
+                style={{
+                  padding: 15,
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  width: '100%',
+                  marginBottom: '30px',
+                }}
+                ref={contentRef}
+              ></textarea>
+              <div>Categories</div>
+              <Select value={form.type} onChange={handleSelectOption} style={{ marginBottom: 30 }}>
+                <MenuItem value="none">
+                  <em>None</em>
+                </MenuItem>
+                {categories.map((cat) => {
+                  return <MenuItem value={cat}>{cat}</MenuItem>;
+                })}
+              </Select>
+              <div>Image</div>
+              <input
+                style={{
+                  padding: 15,
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  width: '100%',
+                  marginBottom: '30px',
+                }}
+                ref={imageRef}
+                placeHolder="Enter image"
+              ></input>
+              <div>Address</div>
+              <input
+                style={{
+                  padding: 15,
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  width: '100%',
+                  marginBottom: '30px',
+                }}
+                ref={addressRef}
+                placeHolder="Enter address"
+              ></input>
+              <div>Phone</div>
+              <input
+                style={{
+                  padding: 15,
+                  border: '2px solid black',
+                  borderRadius: '10px',
+                  width: '100%',
+                  marginBottom: '30px',
+                }}
+                ref={phoneRef}
+                placeHolder="Enter phone"
+              ></input>
 
-          <Button
-            style={{
-              backgroundColor: '#83BB61',
-              width: 286,
-              height: 80,
-              marginTop: '90px',
-              borderRadius: '50px',
-              fontSize: '24px',
-              color: 'white',
-            }}
-            onClick={createProduct}
-          >
-            Create
-          </Button>
-        </div>
+              <Button
+                style={{
+                  backgroundColor: '#83BB61',
+                  width: 286,
+                  height: 80,
+                  marginTop: '90px',
+                  borderRadius: '50px',
+                  fontSize: '24px',
+                  color: 'white',
+                }}
+                onClick={createProduct}
+              >
+                Create
+              </Button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
